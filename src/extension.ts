@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 
-let statusBarItem: vscode.StatusBarItem;
+let statusBarItem: vscode.StatusBarItem | undefined;
 let currentEnvName: string | undefined;
 let currentEnvPath: string | undefined;
 let activeTerminal: vscode.Terminal | undefined;
@@ -85,11 +85,31 @@ function findVirtualEnvs(
  */
 function getActivationCommand(envPath: string): string {
   const platform = os.platform();
+  const terminalConfig = vscode.workspace.getConfiguration('terminal.integrated');
+  
   if (platform === 'win32') {
-    // Windows - use PowerShell activation script
-    return `& "${path.join(envPath, 'Scripts', 'Activate.ps1')}"`;
+    // Check if PowerShell is the default shell
+    const defaultShell = terminalConfig.get<string>('shell.windows') || '';
+    const isPowerShell = defaultShell.toLowerCase().includes('powershell') || 
+                         process.env.SHELL?.toLowerCase().includes('powershell');
+    
+    if (isPowerShell) {
+      // For PowerShell, first set execution policy then activate
+      return `Set-ExecutionPolicy Unrestricted -Scope CurrentUser; & "${path.join(envPath, 'Scripts', 'Activate.ps1')}"`;
+    } else if (defaultShell.toLowerCase().includes('cmd')) {
+      // For CMD
+      return `"${path.join(envPath, 'Scripts', 'activate.bat')}"`;
+    } else {
+      // Default to PowerShell activation for other Windows shells
+      return `& "${path.join(envPath, 'Scripts', 'Activate.ps1')}"`;
+    }
   } else {
-    // macOS/Linux
+    // For macOS/Linux, check if using specific shells
+    const defaultShell = (platform === 'darwin' 
+      ? terminalConfig.get<string>('shell.osx') 
+      : terminalConfig.get<string>('shell.linux')) || '';
+    
+    // Default activation command works for most shells
     return `source "${path.join(envPath, 'bin', 'activate')}"`;
   }
 }
@@ -123,6 +143,10 @@ function showStatusBarItem() {
  * @param envName Name of the environment
  */
 function updateStatusBar(envName: string) {
+  if (!statusBarItem) {
+    return;
+  }
+  
   statusBarItem.text = `$(terminal) Python: ${envName}`;
   currentEnvName = envName;
   
@@ -315,13 +339,31 @@ function deactivateVenv() {
   activeTerminal.show();
   
   const platform = os.platform();
+  const terminalConfig = vscode.workspace.getConfiguration('terminal.integrated');
+  
   if (platform === 'win32') {
-    // Windows - use PowerShell deactivate command
-    activeTerminal!.sendText('deactivate');
+    // Check if PowerShell is the default shell
+    const defaultShell = terminalConfig.get<string>('shell.windows') || '';
+    const isPowerShell = defaultShell.toLowerCase().includes('powershell') || 
+                         process.env.SHELL?.toLowerCase().includes('powershell');
+    
+    // The deactivate command is the same for all Windows shells, but we log the shell type for debugging
+    if (isPowerShell) {
+      console.log('Deactivating in PowerShell');
+    } else if (defaultShell.toLowerCase().includes('cmd')) {
+      console.log('Deactivating in CMD');
+    }
   } else {
-    // macOS/Linux
-    activeTerminal!.sendText('deactivate');
+    // For macOS/Linux, check if using specific shells
+    const defaultShell = (platform === 'darwin' 
+      ? terminalConfig.get<string>('shell.osx') 
+      : terminalConfig.get<string>('shell.linux')) || '';
+    
+    console.log(`Deactivating in shell: ${defaultShell || 'default'}`);
   }
+  
+  // The deactivate command is the same for all shells
+  activeTerminal!.sendText('deactivate');
   
   // Reset environment tracking
   currentEnvPath = undefined;
@@ -359,10 +401,14 @@ function activateVenv(envPath: string) {
 export function activate(context: vscode.ExtensionContext) {
   console.log('Tenvy extension is now active!');
   
-  // Create status bar item only if it doesn't already exist
-  if (!statusBarItem) {
-    createStatusBarItem();
+  // Dispose of any existing status bar item to prevent duplicates
+  if (statusBarItem) {
+    statusBarItem.dispose();
+    statusBarItem = undefined;
   }
+  
+  // Create a new status bar item
+  createStatusBarItem();
   
   // Register the activate command
   const activateCommand = vscode.commands.registerCommand("tenvy.activate", async () => {
@@ -485,6 +531,7 @@ export function activate(context: vscode.ExtensionContext) {
     installRequirements();
   });
 
+  // Add all commands to subscriptions
   context.subscriptions.push(
     activateCommand, 
     selectCommand, 
@@ -492,9 +539,13 @@ export function activate(context: vscode.ExtensionContext) {
     createEnvironmentCommand,
     installRequirementsCommand,
     showOptionsCommand,
-    showStatusBarCommand, 
-    statusBarItem
+    showStatusBarCommand
   );
+  
+  // Add status bar item to subscriptions if it exists
+  if (statusBarItem) {
+    context.subscriptions.push(statusBarItem);
+  }
 }
 
 export function deactivate() {

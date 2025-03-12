@@ -1,4 +1,4 @@
-# Tenvy v0.0.2 - Python Environment Activator
+# Tenvy v0.0.3 - Python Environment Activator
 
 Tenvy is a Visual Studio Code extension created by Daniel Lopez Mella that automatically detects and activates Python virtual environments in your workspace. It simplifies the workflow for Python developers by providing easy access to virtual environment activation directly from VS Code.
 
@@ -15,6 +15,9 @@ GitHub Repository: https://github.com/danilopezmella/tenvy
 - **Status Bar Integration**: Shows the currently active environment in the status bar with options menu
 - **Auto-Activation**: Optionally activate environments automatically when opening a workspace
 - **PowerShell Integration**: Properly activates environments in PowerShell with the green environment indicator
+- **Shell Detection**: Automatically detects and uses the default shell in VS Code
+- **PowerShell Execution Policy**: Automatically adjusts PowerShell execution policy for smooth activation
+- **Multi-Shell Support**: Provides specific activation commands for different shell types (CMD, PowerShell, etc.)
 
 ## Requirements
 
@@ -82,6 +85,13 @@ The status bar button changes color based on its state:
 - On some systems, the status bar button might not be visible by default. Use the "Tenvy: Show Status Bar Button" command to make it visible.
 
 ## Release Notes
+
+### 0.0.3
+
+- Added support for detecting and using the default shell in VS Code
+- Added PowerShell execution policy adjustment for PowerShell terminals
+- Added specific activation commands for different shell types (CMD, PowerShell, etc.)
+- Fixed an issue with multiple status bar items appearing in VS Code
 
 ### 0.0.2
 
