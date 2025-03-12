@@ -1,9 +1,9 @@
 {
     "name":  "tenvy",
-    "displayName":  "tenvy",
-    "description":  "python environment activation in terminal",
+    "displayName":  "Tenvy",
+    "description":  "Python environment activation in terminal",
     "version":  "0.0.1",
-    "publisher":  "danilopezmella",
+    "publisher":  "Daniel Lopez Mella",
     "repository":  {
                        "type":  "git",
                        "url":  "https://github.com/danilopezmella/tenvy"
