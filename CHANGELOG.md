@@ -2,13 +2,15 @@
 
 All notable changes to the "tenvy" extension will be documented in this file.
 
-## [0.0.2] - 2025-04-15
+## [0.0.2] - 2025-03-12
 
 ### Added
 - Compatibility with VS Code 1.84 and above
+- Added Tenvy logo as the extension icon
 
 ### Changed
 - Updated link in README to use GitHub asset for "Keep a Changelog" recommendations
+- Updated package.json to use VS Code 1.84.0 compatibility
 
 ## [0.0.1] - 2025-03-11
 
