@@ -3,13 +3,13 @@
     "displayName":  "Tenvy",
     "description":  "Python environment activation in terminal",
     "version":  "0.0.1",
-    "publisher":  "Daniel Lopez Mella",
+    "publisher":  "DanielLopezMella",
     "repository":  {
                        "type":  "git",
                        "url":  "https://github.com/danilopezmella/tenvy"
                    },
     "engines":  {
-                    "vscode":  "^1.98.0"
+                    "vscode":  "^1.84.0"
                 },
     "categories":  [
                        "Other",
@@ -95,5 +95,5 @@
                             "@vscode/test-cli":  "^0.0.10",
                             "@vscode/test-electron":  "^2.4.1"
                         },
-    "icon":  "images/icon.png"
+    "icon":  "assets/Tenvy_logo.png"
 }

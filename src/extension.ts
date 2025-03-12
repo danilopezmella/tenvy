@@ -359,8 +359,10 @@ function activateVenv(envPath: string) {
 export function activate(context: vscode.ExtensionContext) {
   console.log('Tenvy extension is now active!');
   
-  // Create status bar item
-  createStatusBarItem();
+  // Create status bar item only if it doesn't already exist
+  if (!statusBarItem) {
+    createStatusBarItem();
+  }
   
   // Register the activate command
   const activateCommand = vscode.commands.registerCommand("tenvy.activate", async () => {
