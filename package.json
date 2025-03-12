@@ -1,0 +1,99 @@
+{
+    "name":  "tenvy",
+    "displayName":  "tenvy",
+    "description":  "python environment activation in terminal",
+    "version":  "0.0.1",
+    "publisher":  "example",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/example/tenvy"
+                   },
+    "engines":  {
+                    "vscode":  "^1.98.0"
+                },
+    "categories":  [
+                       "Other",
+                       "Programming Languages"
+                   ],
+    "activationEvents":  [
+                             "onStartupFinished",
+                             "onCommand:tenvy.activate",
+                             "onCommand:tenvy.select"
+                         ],
+    "main":  "./out/extension.js",
+    "contributes":  {
+                        "commands":  [
+                                         {
+                                             "command":  "tenvy.activate",
+                                             "title":  "Tenvy: Activate Environment"
+                                         },
+                                         {
+                                             "command":  "tenvy.select",
+                                             "title":  "Tenvy: Select Environment"
+                                         },
+                                         {
+                                             "command":  "tenvy.deactivate",
+                                             "title":  "Tenvy: Deactivate Environment"
+                                         },
+                                         {
+                                             "command":  "tenvy.createEnvironment",
+                                             "title":  "Tenvy: Create New Environment"
+                                         },
+                                         {
+                                             "command":  "tenvy.installRequirements",
+                                             "title":  "Tenvy: Install Requirements"
+                                         },
+                                         {
+                                             "command":  "tenvy.showStatusBar",
+                                             "title":  "Tenvy: Show Status Bar Button"
+                                         },
+                                         {
+                                             "command":  "tenvy.showOptions",
+                                             "title":  "Tenvy: Show Environment Options"
+                                         }
+                                     ],
+                        "configuration":  {
+                                              "type":  "object",
+                                              "title":  "Tenvy",
+                                              "properties":  {
+                                                                 "tenvy.activateOnOpen":  {
+                                                                                              "type":  "boolean",
+                                                                                              "default":  false,
+                                                                                              "description":  "Automatically activate the venv when the workspace is opened."
+                                                                                          },
+                                                                 "tenvy.detectedFolders":  {
+                                                                                               "type":  "array",
+                                                                                               "items":  {
+                                                                                                             "type":  "string"
+                                                                                                         },
+                                                                                               "default":  [
+                                                                                                               ".venv",
+                                                                                                               "venv",
+                                                                                                               "env"
+                                                                                                           ],
+                                                                                               "description":  "Folder names to look for as virtual environments."
+                                                                                           }
+                                                             }
+                                          }
+                    },
+    "scripts":  {
+                    "vscode:prepublish":  "npm run compile",
+                    "compile":  "tsc -p ./",
+                    "watch":  "tsc -watch -p ./",
+                    "pretest":  "npm run compile \u0026\u0026 npm run lint",
+                    "lint":  "eslint src",
+                    "test":  "vscode-test"
+                },
+    "devDependencies":  {
+                            "@types/vscode":  "^1.98.0",
+                            "@types/mocha":  "^10.0.9",
+                            "@types/node":  "20.x",
+                            "@typescript-eslint/eslint-plugin":  "^8.10.0",
+                            "@typescript-eslint/parser":  "^8.7.0",
+                            "eslint":  "^9.13.0",
+                            "typescript":  "^5.6.3",
+                            "@vscode/test-cli":  "^0.0.10",
+                            "@vscode/test-electron":  "^2.4.1"
+                        },
+    "icon":  "images/icon.png"
+}
