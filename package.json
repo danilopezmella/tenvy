@@ -3,10 +3,10 @@
     "displayName":  "tenvy",
     "description":  "python environment activation in terminal",
     "version":  "0.0.1",
-    "publisher":  "example",
+    "publisher":  "danilopezmella",
     "repository":  {
                        "type":  "git",
-                       "url":  "https://github.com/example/tenvy"
+                       "url":  "https://github.com/danilopezmella/tenvy"
                    },
     "engines":  {
                     "vscode":  "^1.98.0"

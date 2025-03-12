@@ -1,6 +1,8 @@
-# Tenvy - Python Environment Activator
+# Tenvy v0.0.1 - Python Environment Activator
 
-Tenvy is a Visual Studio Code extension that automatically detects and activates Python virtual environments in your workspace. It simplifies the workflow for Python developers by providing easy access to virtual environment activation directly from VS Code.
+Tenvy is a Visual Studio Code extension created by Daniel Lopez Mella that automatically detects and activates Python virtual environments in your workspace. It simplifies the workflow for Python developers by providing easy access to virtual environment activation directly from VS Code.
+
+GitHub Repository: https://github.com/danilopezmella/tenvy
 
 ## Features
 
